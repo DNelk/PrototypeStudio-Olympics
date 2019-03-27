@@ -1,0 +1,19 @@
+{
+  "name": "olympics",
+  "version": "1.0.0",
+  "description": "A game about a really good marathon",
+  "main": "./src/app.js",
+  "scripts": {
+    "test": "echo \"Tests complete\"",
+    "start": "node ./src/app.js",
+    "pretest": "jshint ./src"
+  },
+  "keywords": [
+    "NPM"
+  ],
+  "author": "Dylan Nelkin",
+  "license": "ISC",
+  "devDependencies": {
+    "jshint": "^2.10.2"
+  }
+}
