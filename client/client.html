@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- import the websocket client library. You can code websockets from scratch
+         but we will just import a library. In this case we are using socket.io which is 
+         one of the most popular and feature rich websocket libraries.
+         
+         You can point the src for the script to any host online, but
+         by default the socket.io nodejs library will host the client library
+         online at your node.js address under /socket.io/socket.io.js 
+         You can disable that on the server if desired
+    -->
+	<style>
+		textarea {
+			display: block;
+			background-color: #EEEEEE;
+		}
+	</style>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		function connectSocket(e) {
+			var message = document.querySelector("#message");
+			var chat = document.querySelector("#chat");
+			var nameField = document.querySelector("#username");
+			var socket = io.connect();
+			
+			//listener for connect event
+			socket.on('connect', function() {
+				console.log('connecting');
+			
+				var user = nameField.value;
+				if(!user) {
+					user = 'unknown';
+				}
+				nameField.readOnly = true
+				socket.emit('join', { name: user });
+			});
+			//listener for msg event
+			socket.on('msg', function(data) {
+				chat.value += data.name + ": " + data.msg + "\n";
+			});
+			//Listener for name change
+			socket.on('namechange', function(data) {
+				nameField.value = data.name;
+			});
+		}
+		
+		function sendMsg(e){
+			var socket = io.connect();
+			var  message = document.querySelector("#message");
+			var user = document.querySelector("#username").value;
+			if(!user) {
+				user = 'unknown';
+			}
+			socket.emit('msgToServer', {msg: message.value, name: user});
+			message.value = "";
+		}
+		function init() {
+			var connect = document.querySelector("#connect");
+			connect.addEventListener('click', connectSocket);
+			var send = document.querySelector("#send");
+			send.addEventListener('click', sendMsg);
+		}
+		window.onload = init;
+	</script>
+</head>
+<body>
+	<h3> Commands: </h3>
+	<ul>
+	<li>/me xxx - Perform xxx</li>
+	<li>/namechange xxx - Change your username to xxx</li>
+	<li>/pm xxx yyy - Send yyy privately to xxx</li>
+	</ul>
+	<label for="user">Username:</label>
+	<input id="username" name="user" type="text"/>
+	<input id="connect" type='button' value='connect'/>
+	</br>
+	<label for="message">Message:</label>
+	<input id="message" name="message" type="text"/>
+	<input id="send" type="button" value="send" />
+	
+	<textarea id="chat" rows="20" cols="40" readonly></textarea>
+</body>
+</html>

@@ -15,5 +15,8 @@
   "license": "ISC",
   "devDependencies": {
     "jshint": "^2.10.2"
+  },
+  "dependencies": {
+    "socket.io": "^2.2.0"
   }
 }
