@@ -1,20 +1,25 @@
-var http = require('http');
-var fs = require('fs');
+var path = require('path');
+var socketio = require('socket.io');
+var express = require('express');
+var port = process.env.PORT || process.env.NODE_PORT || 3000;
+var app = express();
 var socketio = require('socket.io');
 
-
+app.use('/assets', express.static(path.resolve(__dirname+'../../client/')));
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 
-var port = process.env.PORT || process.env.NODE_PORT || 3000;
-
-var app = http.createServer(onRequest).listen(port);
-
-console.log("Listening...");
+var server = app.listen(port, function(err) {
+	if (err) {
+		throw err;
+	}
+	console.log('Listening on port ' + port);
+});
 
 //pass in the http server into socketio and grab the websocket server as io
-var io = socketio(app);
+var io = socketio(server);
 
+//Router
 var onJoined = function(socket) {
 	socket.on("join", function(data) {
 		socket.join('room1');
