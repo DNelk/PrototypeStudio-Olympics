@@ -17,10 +17,11 @@ var server = app.listen(port, function(err) {
 	console.log('Listening on port ' + port);
 });
 
-//pass in the http server into socketio and grab the websocket server as io
 var io = socketio(server);
 
 //Router
+var router = require('./router.js');
+
 var onJoined = function(socket) {
 	socket.on("join", function(data) {
 		socket.join('room1');
@@ -50,3 +51,4 @@ io.sockets.on("connection", function(socket) {
 	onMsg(socket);
 	onDisconnect(socket);
 });
+ 
