@@ -2,18 +2,12 @@ var http = require('http');
 var fs = require('fs');
 var socketio = require('socket.io');
 
+
+app.set('view engine', 'jade');
+app.set('views', __dirname + '/views');
+
 var port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-//Read client into memory
-var index = fs.readFileSync(__dirname + '/../client/client.html');
-
-//Handle http requests
-function onRequest(request, response) {
-
- response.writeHead(200, {"Content-Type": "text/html"});
- response.write(index);
- response.end();
-}
 var app = http.createServer(onRequest).listen(port);
 
 console.log("Listening...");
