@@ -1,6 +1,7 @@
 var path = require('path');
 var socketio = require('socket.io');
 var express = require('express');
+var bodyParser = require('body-parser')
 var port = process.env.PORT || process.env.NODE_PORT || 3000;
 var app = express();
 var socketio = require('socket.io');
@@ -8,7 +9,7 @@ var socketio = require('socket.io');
 app.use('/assets', express.static(path.resolve(__dirname+'../../client/')));
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
-
+app.use(bodyParser.urlencoded({extended:true}));
 var server = app.listen(port, function(err) {
 	if (err) {
 		throw err;
